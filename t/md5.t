@@ -1,7 +1,3 @@
-# SCCS ID @(#)test.pl	1.1 96/04/09
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
-
 ######################### We start with some black magic to print on failure.
 
 # Change 1..1 below to 1..last_test_to_print .
@@ -48,8 +44,31 @@ foreach (sort(keys(%data)))
     $md5->add($_);
     $digest = $md5->digest;
     $hex = unpack("H*", $digest);
-    if ($hex ne $data{$_})
-    {
+    if ($hex ne $data{$_}) {
+        print STDERR "\$md5->digest: $_\n";
+        print STDERR "expected: $data{$_}\n",
+                     "got     : $hex\n";
+	$failed++;
+    }
+
+    if (Digest::MD5::md5($_) ne $digest) {
+	print STDERR "md5($_) failed\n";
+	$failed++;
+    }
+
+    if (Digest::MD5::md5_hex($_) ne $hex) {
+	print STDERR "md5_hex($_) failed\n";
+	$failed++;
+    }
+
+    # same stuff ending with $md5->hexdigest instead
+    $md5->reset;
+    $md5->add($_);
+    $hex = $md5->hexdigest;
+    if ($hex ne $data{$_}) {
+        print STDERR "\$md5->hexdigest: $_\n";
+        print STDERR "expected: $data{$_}\n",
+                     "got     : $hex\n";
 	$failed++;
     }
 }
