@@ -1,4 +1,4 @@
-# SCCS ID @(#)MD5.pm	1.8 96/04/09
+# SCCS ID @(#)MD5.pm	1.9 96/06/28
 package MD5;
 
 use strict;
@@ -15,7 +15,7 @@ require AutoLoader;
 @EXPORT = qw(
 	
 );
-$VERSION = '1.6';
+$VERSION = '1.7';
 
 bootstrap MD5 $VERSION;
 
@@ -121,9 +121,10 @@ C<add('foobar')> should all give the same result.
 
 The final message digest value is returned by the B<digest> operation
 as a 16-byte binary string. This operation delivers the result of
-operations since the last B<new> or B<reset> operation. Once the
-operation has been performed, the context must be B<reset> before being
-used to calculate another digest value.
+B<add> operations since the last B<new> or B<reset> operation. Note
+that the B<digest> operation is effectively a destructive, read-once
+operation. Once it has been performed, the context must be B<reset>
+before being used to calculate another digest value.
 
 Several convenience functions are also provided. The B<addfile>
 operation takes an open file-handle and reads it until end-of file in

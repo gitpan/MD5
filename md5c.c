@@ -60,11 +60,11 @@ documentation and/or software.
 
 static void MD5Transform PROTO_LIST ((UINT4 [4], unsigned char [64]));
 static void Encode PROTO_LIST
-  ((unsigned char *, UINT4 *, unsigned int));
+  ((unsigned char *, UINT4 *, unsigned long));
 static void Decode PROTO_LIST
-  ((UINT4 *, unsigned char *, unsigned int));
-static void MD5_memcpy PROTO_LIST ((POINTER, POINTER, unsigned int));
-static void MD5_memset PROTO_LIST ((POINTER, int, unsigned int));
+  ((UINT4 *, unsigned char *, unsigned long));
+static void MD5_memcpy PROTO_LIST ((POINTER, POINTER, unsigned long));
+static void MD5_memset PROTO_LIST ((POINTER, int, unsigned long));
 
 static unsigned char PADDING[64] = {
   0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -74,14 +74,14 @@ static unsigned char PADDING[64] = {
 
 /* F, G, H and I are basic MD5 functions.
  */
-#define F(x, y, z) (((x) & (y)) | ((~x) & (z)))
-#define G(x, y, z) (((x) & (z)) | ((y) & (~z)))
-#define H(x, y, z) ((x) ^ (y) ^ (z))
-#define I(x, y, z) ((y) ^ ((x) | (~z)))
+#define F(x, y, z) TO32((((x) & (y)) | ((~x) & (z))))
+#define G(x, y, z) TO32((((x) & (z)) | ((y) & (~z))))
+#define H(x, y, z) TO32(((x) ^ (y) ^ (z)))
+#define I(x, y, z) TO32(((y) ^ ((x) | (~z))))
 
 /* ROTATE_LEFT rotates x left n bits.
  */
-#define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32-(n))))
+#define ROTATE_LEFT(x, n) TO32((((x) << (n)) | (TO32((x)) >> (32-(n)))))
 
 /* FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.
 Rotation is separate from addition to prevent recomputation.
@@ -90,21 +90,25 @@ Rotation is separate from addition to prevent recomputation.
  (a) += F ((b), (c), (d)) + (x) + (UINT4)(ac); \
  (a) = ROTATE_LEFT ((a), (s)); \
  (a) += (b); \
+ TO32((a)); \
   }
 #define GG(a, b, c, d, x, s, ac) { \
  (a) += G ((b), (c), (d)) + (x) + (UINT4)(ac); \
  (a) = ROTATE_LEFT ((a), (s)); \
  (a) += (b); \
+ TO32((a)); \
   }
 #define HH(a, b, c, d, x, s, ac) { \
  (a) += H ((b), (c), (d)) + (x) + (UINT4)(ac); \
  (a) = ROTATE_LEFT ((a), (s)); \
  (a) += (b); \
+ TO32((a)); \
   }
 #define II(a, b, c, d, x, s, ac) { \
  (a) += I ((b), (c), (d)) + (x) + (UINT4)(ac); \
  (a) = ROTATE_LEFT ((a), (s)); \
  (a) += (b); \
+ TO32((a)); \
   }
 
 /* MD5 initialization. Begins an MD5 operation, writing a new context.
@@ -128,18 +132,18 @@ MD5_CTX *context;                                        /* context */
 void MD5Update (context, input, inputLen)
 MD5_CTX *context;                                        /* context */
 unsigned char *input;                                /* input block */
-unsigned int inputLen;                     /* length of input block */
+unsigned long inputLen;                    /* length of input block */
 {
-  unsigned int i, index, partLen;
+  unsigned long i, index, partLen;
 
   /* Compute number of bytes mod 64 */
-  index = (unsigned int)((context->count[0] >> 3) & 0x3F);
+  index = (unsigned long)((context->count[0] >> 3) & 0x3F);
 
   /* Update number of bits */
-  if ((context->count[0] += ((UINT4)inputLen << 3))
-   < ((UINT4)inputLen << 3))
+  if (TO32(context->count[0] += (inputLen << 3))
+   < TO32(inputLen << 3))
  context->count[1]++;
-  context->count[1] += ((UINT4)inputLen >> 29);
+  context->count[1] += (inputLen >> 29);
 
   partLen = 64 - index;
 
@@ -172,14 +176,14 @@ unsigned char digest[16];                         /* message digest */
 MD5_CTX *context;                                       /* context */
 {
   unsigned char bits[8];
-  unsigned int index, padLen;
+  unsigned long index, padLen;
 
   /* Save number of bits */
   Encode (bits, context->count, 8);
 
   /* Pad out to 56 mod 64.
 */
-  index = (unsigned int)((context->count[0] >> 3) & 0x3f);
+  index = (unsigned long)((context->count[0] >> 3) & 0x3f);
   padLen = (index < 56) ? (56 - index) : (120 - index);
   MD5Update (context, PADDING, padLen);
 
@@ -276,10 +280,10 @@ unsigned char block[64];
   II (c, d, a, b, x[ 2], S43, 0x2ad7d2bb); /* 63 */
   II (b, c, d, a, x[ 9], S44, 0xeb86d391); /* 64 */
 
-  state[0] += a;
-  state[1] += b;
-  state[2] += c;
-  state[3] += d;
+  state[0] += a; TO32(state[0]);
+  state[1] += b; TO32(state[1]);
+  state[2] += c; TO32(state[2]);
+  state[3] += d; TO32(state[3]);
 
   /* Zeroize sensitive information.
    */
@@ -292,9 +296,9 @@ unsigned char block[64];
 static void Encode (output, input, len)
 unsigned char *output;
 UINT4 *input;
-unsigned int len;
+unsigned long len;
 {
-  unsigned int i, j;
+  unsigned long i, j;
 
   for (i = 0, j = 0; j < len; i++, j += 4) {
  output[j] = (unsigned char)(input[i] & 0xff);
@@ -310,9 +314,9 @@ unsigned int len;
 static void Decode (output, input, len)
 UINT4 *output;
 unsigned char *input;
-unsigned int len;
+unsigned long len;
 {
-  unsigned int i, j;
+  unsigned long i, j;
 
   for (i = 0, j = 0; j < len; i++, j += 4)
  output[i] = ((UINT4)input[j]) | (((UINT4)input[j+1]) << 8) |
@@ -325,9 +329,9 @@ unsigned int len;
 static void MD5_memcpy (output, input, len)
 POINTER output;
 POINTER input;
-unsigned int len;
+unsigned long len;
 {
-  unsigned int i;
+  unsigned long i;
 
   for (i = 0; i < len; i++)
  output[i] = input[i];
@@ -338,9 +342,9 @@ unsigned int len;
 static void MD5_memset (output, value, len)
 POINTER output;
 int value;
-unsigned int len;
+unsigned long len;
 {
-  unsigned int i;
+  unsigned long i;
 
   for (i = 0; i < len; i++)
  ((char *)output)[i] = (char)value;

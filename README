@@ -1,4 +1,4 @@
-MD5 Extension Version 1.6
+MD5 Extension Version 1.7
 
 This is a Perl5 extension interface to the RSA Data Security Inc. MD5
 Message Digest algorithm. Documentation is in MD5.pod.
@@ -26,6 +26,10 @@ The module is known to work (using static or dynamic linking) on at
 least AIX, Solaris, HP-UX and IRIX. It should work on other
 "reasonable" UNIX-like platforms (for an unspecified definition of the
 word "reasonable" :-)
+
+Support is also provided for 64-bit platforms. This should be detected
+and handled automatically. See the entry for version 1.7 in the
+Changes file for further details.
 
 Bugs, queries, plaudits to
 

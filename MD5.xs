@@ -4,7 +4,7 @@
 **	RSA Data Security Inc. MD5 Message-Digest Algorithm
 **
 **	This module by Neil Winton (N.Winton@axion.bt.co.uk)
-**	SCCS ID @(#)MD5.xs	1.6 96/04/09
+**	SCCS ID @(#)MD5.xs	1.7 96/06/28
 **
 **	This extension may be distributed under the same terms
 **	as Perl. The MD5 code is covered by separate copyright and
@@ -97,5 +97,5 @@ digest(context)
 	    unsigned char digeststr[16];
 
 	    MD5Final(digeststr, context);
-	    ST(0) = sv_2mortal(newSVpv(digeststr, 16));
+	    ST(0) = sv_2mortal(newSVpv((char *)digeststr, 16));
 	}

@@ -1,5 +1,30 @@
 Revision history for Perl extension MD5.
 
+*** 96/06/20 Version 1.7
+
+MD5 is now completely 64-bit clean (I hope). The basic MD5 code uses
+32-bit quantities and requires a typedef UINT4 to be defined in
+global.h. Perl configuration data (the value of BYTEORDER) is used to
+determine if unsigned longs have 4 or 8 bytes. On 64-bit platforms (eg
+DEC Alpha) then it assumes that "unsigned int" will be a 32-bit type.
+If this is incorrect then adding -DUINT4_IS_LONG to the DEFINES line in
+Makefile.PL will override this.
+
+On some machines (at least Cray that I know of) there is no 32-bit
+integer type. In this case defining TRUNCATE_UINT4 (which is done
+automatically for a Cray) will ensure that 64-bit values are masked
+down to 32 bits. I have done my best to test this but without easy
+access to a true 64-bit machine I can not totally guarantee it (unless
+anyone wants to lend me a spare Cray :-)
+
+There is one remaining limitation for 64-bit enabled processors. The
+amount of data passed to any single call to the underlying MD5
+routines is limited to (2^32 - 1) bytes -- that's 4 gigabytes. I'm
+sorry if that's a real problem for you ...
+
+And finally, a minor complilation warning (unsigned char * used with
+function having char * prototype) has also been eliminated.
+
 *** 96/04/09 Version 1.6
 
 Re-generated module framework using h2xs to pick up the latest module
@@ -55,4 +80,4 @@ always implicitly in package main while other filehandles aren't.
 
 [Changes pre 1.2.1 not recorded]
 
-SCCS ID @(#)Changes	1.4 96/04/09
+SCCS ID @(#)Changes	1.5 96/06/28
