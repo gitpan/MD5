@@ -1,34 +1,28 @@
 package MD5;
 
 use strict;
-use vars qw($VERSION @ISA @EXPORT);
+use vars qw($VERSION @ISA @EXPORT_OK);
+
+$VERSION = '1.9951';  # $Date: 1998/10/22 18:53:32 $
 
 require Exporter;
+*import = \&Exporter::import;
+@EXPORT_OK = qw(md5 md5_hex md5_base64);
+
 require DynaLoader;
+@ISA=qw(DynaLoader);
+MD5->bootstrap($VERSION);
 
-@ISA = qw(Exporter DynaLoader);
-@EXPORT = qw();
-$VERSION = '1.9950';  # $Date: 1998/10/22 10:18:29 $
-
-bootstrap MD5 $VERSION;
-
+*reset = \&new;
 
 sub hash
 {
-    my $self = shift;
-    if (ref($self)) {
-	$self->reset;
-    } else {
-	$self = $self->new;
-    }
-    $self->add(@_);
-    $self->digest;
+    new(@_)->digest;
 }
 
 sub hexhash
 {
-    my $self = shift;
-    unpack("H*", $self->hash(@_));
+    new(@_)->hexdigest;
 }
 
 1;
@@ -91,6 +85,45 @@ class a temporary context is created. When invoked through an already
 created context object, this context is used. The latter form is
 slightly more efficient. The B<hexhash> operation is analogous to
 B<hexdigest>.
+
+=head1 FUNCTIONS
+
+The following functions can be exported on explicit request.
+
+=over 4
+
+=item md5($data,...)
+
+=item md5_hex($data,...)
+
+=item md5_base64($data,...)
+
+=back
+
+=head1 METHODS
+
+The following methods are available:
+
+=over 4
+
+=item $md5 = MD5->new([$data],...)
+
+=item $md5->add($data,...)
+
+=item $md5->addfile($handle)
+
+=item $md5->digest
+
+=item $md5->hexdigest
+
+=item $md5->b64digest
+
+=item MD5->hash($data,...)
+
+=item MD5->hexhash($data,...)
+
+=back
+
 
 =head1 EXAMPLES
 
