@@ -15,6 +15,9 @@ MD5 - Perl interface to the RSA Data Security Inc. MD5 Message-Digest Algorithm
     $digest = $context->digest();
     $string = $context->hexdigest();
 
+    $digest = MD5->hash(SCALAR);
+    $string = MD5->hexhash(SCALAR);
+
 =head1 DESCRIPTION
 
 The B<MD5> module allows you to use the RSA Data Security Inc. MD5
@@ -23,9 +26,9 @@ Message Digest algorithm from within Perl programs.
 A new MD5 context object is created with the B<new> operation.
 Multiple simultaneous digest contexts can be maintained, if desired.
 The context is updated with the B<add> operation which adds the
-strings contained in the I<LIST> parameter.  The context is updated
-after each element is added so that C<add('foo', 'bar')> may give
-different results to C<add('foobar')>.
+strings contained in the I<LIST> parameter. Note, however, that
+C<add('foo', 'bar')>, C<add('foo')> followed by C<add('bar')> and
+C<add('foobar')> should all give the same result.
 
 The final message digest value is returned by the B<digest> operation
 as a 16-byte binary string. This operation delivers the result of
@@ -33,12 +36,24 @@ operations since the last B<new> or B<reset> operation. Once the
 operation has been performed, the context must be B<reset> before being
 used to calculate another digest value.
 
-Two convenience functions are also provided. The B<addfile> operation
-takes an open file-handle and reads it until end-of file in 1024 byte
-blocks adding the contents to the context. The B<hexdigest> operation
-calls B<digest> and returns the result as a printable string of
-hexdecimal digits. This is exactly the same operation as performed by
-the B<unpack> operation in the following example.
+Several convenience functions are also provided. The B<addfile>
+operation takes an open file-handle and reads it until end-of file in
+1024 byte blocks adding the contents to the context. The file-handle
+can either be specified by name or passed as a type-glob reference, as
+shown in the examples below. The B<hexdigest> operation calls
+B<digest> and returns the result as a printable string of hexdecimal
+digits. This is exactly the same operation as performed by the
+B<unpack> operation in the examples below.
+
+The B<hash> operation can act as either a static member function (ie
+you invoke it on the MD5 class as in the synopsis above) or as a
+normal virtual function. In both cases it performs the complete MD5
+cycle (reset, add, digest) on the supplied scalar value. This is
+convenient for handling small quantities of data. When invoked on the
+class a temporary context is created. When invoked through an already
+created context object, this context is used. The latter form is
+slightly more efficient. The B<hexhash> operation is analogous to
+B<hexdigest>.
 
 =head1 EXAMPLES
 
@@ -51,11 +66,64 @@ the B<unpack> operation in the following example.
     
     print("Digest is " . unpack("H*", $digest) . "\n");
 
-The above exmaple would print out the message
+The above example would print out the message
 
     Digest is 6df23dc03f9b54cc38a0fc1483df6e21
 
 provided that the implementation is working correctly.
+
+Remembering the Perl motto ("There's more than one way to do it"), the
+following should all give the same result:
+
+    use MD5;
+    $md5 = new MD5;
+
+    die "Can't open /etc/passwd ($!)\n" unless open(P, "/etc/passwd");
+
+    seek(P, 0, 0);
+    $md5->reset;
+    $md5->addfile(P);
+    $d = $md5->hexdigest;
+    print "addfile (handle name) = $d\n";
+
+    seek(P, 0, 0);
+    $md5->reset;
+    $md5->addfile(\*P);
+    $d = $md5->hexdigest;
+    print "addfile (type-glob reference) = $d\n";
+
+    seek(P, 0, 0);
+    $md5->reset;
+    while (<P>)
+    {
+        $md5->add($_);
+    }
+    $d = $md5->hexdigest;
+    print "Line at a time = $d\n";
+
+    seek(P, 0, 0);
+    $md5->reset;
+    $md5->add(<P>);
+    $d = $md5->hexdigest;
+    print "All lines at once = $d\n";
+
+    seek(P, 0, 0);
+    $md5->reset;
+    while (read(P, $data, (rand % 128) + 1))
+    {
+        $md5->add($data);
+    }
+    $d = $md5->hexdigest;
+    print "Random chunks = $d\n";
+
+    seek(P, 0, 0);
+    $md5->reset;
+    undef $/;
+    $data = <P>;
+    $d = $md5->hexhash($data);
+    print "Single string = $d\n";
+
+    close(P);
 
 =head1 NOTE
 

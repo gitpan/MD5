@@ -4,7 +4,7 @@
 **	RSA Data Security Inc. MD5 Message-Digest Algorithm
 **
 **	This module by Neil Winton (N.Winton@axion.bt.co.uk)
-**	SCCS ID @(#)MD5.xs	1.4 95/05/23
+**	SCCS ID @(#)MD5.xs	1.5 96/02/27
 **
 **	This extension may be distributed under the same terms
 **	as Perl. The MD5 code is covered by separate copyright and
@@ -19,6 +19,17 @@
 
 #include "global.h"
 #include "md5.h"
+
+/*
+** The following macro re-definitions added to work around a problem on
+** Solaris where the original MD5 routines are already in /lib/libnsl.a.
+** This causes dynamic linking of the module to fail.
+** Thanks to Ken Pizzini (ken@spry.com) for finally nailing this one!
+*/
+
+#define MD5Init		MD5Init_perl
+#define MD5Update	MD5Update_perl
+#define MD5Final	MD5Final_perl
 
 typedef MD5_CTX	*MD5;
 
