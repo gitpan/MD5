@@ -1,5 +1,27 @@
 Revision history for Perl extension MD5.
 
+1998-10-22   Gisle Aas <aas@sn.no>
+
+   Release 1.99_50
+
+   Much better performance (more than twice as fast now).  Mostly
+   because we use Copy/Zero instead of the original MD5_memcpy and
+   MD5_memset functions.
+
+   The addfile() and hexdigest() methods are now XS implemented.
+
+   All RSA functions now included in MD5.xs and made static.
+
+   Use perl's Copy/Zero.
+
+   Random cleanup, simplifications and reformatting.
+   Merged things better with the perl configuration.
+
+
+
+Neil Winton's versions:
+
+
 *** 96/06/20 Version 1.7
 
 MD5 is now completely 64-bit clean (I hope). The basic MD5 code uses
@@ -79,5 +101,3 @@ always implicitly in package main while other filehandles aren't.
 *** 95/05/23 Version 1.2.1
 
 [Changes pre 1.2.1 not recorded]
-
-SCCS ID @(#)Changes	1.5 96/06/28

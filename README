@@ -1,37 +1,36 @@
------BEGIN PGP SIGNED MESSAGE-----
+MD5 Extension
+-------------
 
-Friday, March 6, 1998
+This is a Perl5 extension interface to the RSA Data Security Inc. MD5
+Message Digest algorithm.
 
-This is the MD5 module with shared libraries compiled for 
-MacPerl.  Shared libraries run only on PPC and CFM68K versions, not 
-non-CFM 68K versions.
+To build the extension, unpack this distribution somewhere, create the
+Makefile using 'perl Makefile.PL' and do a 'make' and 'make install'.
 
-This was compiled with MPW and Codewarrior.  Passed all tests.  
-I have no 68K machine so I can't test the CFM68K version.  Let me 
-know of any problems.
+The mddriver.pl script gives a simple example of how to use the
+routines. In particular 'perl mddriver.pl -x' will perform a quick
+test of the routines to see if they produce the expected output. The
+use of "make test" will perform a more comprehensive test.
 
-Decompress macblib.sit.hqx and install the three files in "macblib".
-Installing into your site_perl directory is best:
+The module is known to work on at least Linux, AIX, Solaris, HP-UX and
+IRIX. It should work on other "reasonable" UNIX-like platforms (for an
+unspecified definition of the word "reasonable" :-)
 
-    {MACPERL}site_perl:MD5.pm
-    {MACPERL}site_perl:MacCFM68K:auto:MD5:MD5
-    {MACPERL}site_perl:MacPPC:auto:MD5:MD5
+Support is also provided for 64-bit platforms. This should be detected
+and handled automatically. See the entry for version 1.7 in the
+Changes file for further details.
 
-Also read README.orig, the original README file for this distribution.
+Copyright 1998 Gisle Aas.
+Copyright 1996 Neil Winton.
+Copyright 1991-1992 RSA Data Security, Inc.
 
------BEGIN PGP SIGNATURE-----
-Version: PGPfreeware 5.0 for non-commercial use <http://www.pgp.com>
-Charset: noconv
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
 
-iQCVAwUBNQBVfChcZja3bnKtAQGKkAP+PNAI1pk9I5g4cABt43ko8LMg88QvghW4
-1crgbAu3BxvG9aF7zoXsyBYcLM+mPAKjwTJT0sUVhAhjuNKkSYVgZNWFVW8RT6re
-8/DHJeBn9M9B/tKdZTPth6BnlNhwk8KvLFSHKF8AV5NPpMgfyt5xFNbTJCugCTXa
-iRkYI2YFzGY=
-=KYAN
------END PGP SIGNATURE-----
+This version of MD5.pm released by Gisle Aas <gisle@aas.no>.  It was
+based on MD5-1.7 made by Neil Winton.
 
--- 
-Chris Nandor          mailto:pudge@pobox.com         http://pudge.net/
-%PGPKey=('B76E72AD',[1024,'0824 090B CE73 CA10  1FF7 7F13 8180 B6B6'])
-#==               New Book:  MacPerl: Power and Ease               ==#
-#==    Publishing Date: Early 1998. http://www.ptf.com/macperl/    ==#
+*   Neil Winton			Post Point P5		*
+*   N.Winton@axion.bt.co.uk	BT Laboratories		*
+*   Tel +44 1473 646079		Martlesham Heath	*
+*   Fax +44 1473 643306		IPSWICH IP5 7RE, UK	*

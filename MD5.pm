@@ -1,4 +1,3 @@
-# SCCS ID @(#)MD5.pm	1.9 96/06/28
 package MD5;
 
 use strict;
@@ -6,90 +5,38 @@ use vars qw($VERSION @ISA @EXPORT);
 
 require Exporter;
 require DynaLoader;
-require AutoLoader;
 
-@ISA = qw(Exporter AutoLoader DynaLoader);
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-@EXPORT = qw(
-	
-);
-$VERSION = '1.7';
+@ISA = qw(Exporter DynaLoader);
+@EXPORT = qw();
+$VERSION = '1.9950';  # $Date: 1998/10/22 10:18:29 $
 
 bootstrap MD5 $VERSION;
 
-# Preloaded methods go here.
-
-sub addfile
-{
-    no strict 'refs';	# Countermand any strct refs in force so that we
-			# can still handle file-handle names.
-
-    my ($self, $handle) = @_;
-    my ($package, $file, $line) = caller;
-    my ($data) = '';
-
-    if (!ref($handle))
-    {
-	# Old-style passing of filehandle by name. We need to add
-	# the calling package scope qualifier, if there is not one
-	# supplied already.
-
-	$handle = $package . '::' . $handle unless ($handle =~ /(\:\:|\')/);
-    }
-
-    while (read($handle, $data, 1024))
-    {
-	$self->add($data);
-    }
-}
-
-sub hexdigest
-{
-    my ($self) = shift;
-
-    unpack("H*", ($self->digest()));
-}
 
 sub hash
 {
-    my ($self, $data) = @_;
-
-    if (ref($self))
-    {
-	# This is an instance method call so reset the current context
-
-	$self->reset();
+    my $self = shift;
+    if (ref($self)) {
+	$self->reset;
+    } else {
+	$self = $self->new;
     }
-    else
-    {
-	# This is a static method invocation, create a temporary MD5 context
-
-	$self = new MD5;
-    }
-
-    # Now do the hash
-
-    $self->add($data);
-    $self->digest();
+    $self->add(@_);
+    $self->digest;
 }
 
 sub hexhash
 {
-    my ($self, $data) = @_;
-
-    unpack("H*", ($self->hash($data)));
+    my $self = shift;
+    unpack("H*", $self->hash(@_));
 }
-
-# Autoload methods go after =cut, and are processed by the autosplit program.
 
 1;
 __END__
 
 =head1 NAME
 
-MD5 - Perl interface to the RSA Data Security Inc. MD5 Message-Digest Algorithm
+MD5 - Perl interface to the MD5 Message-Digest Algorithm
 
 =head1 SYNOPSIS
 
@@ -215,14 +162,22 @@ following should all give the same result:
 
     close(P);
 
-=head1 NOTE
+=head1 COPYRIGHT
 
-The MD5 extension may be redistributed under the same terms as Perl.
+This library is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+ Copyright 1998 Gisle Aas.
+ Copyright 1995-1996 Neil Winton.
+ Copyright 1991-1992 RSA Data Security, Inc.
+
 The MD5 algorithm is defined in RFC1321. The basic C code implementing
 the algorithm is derived from that in the RFC and is covered by the
 following copyright:
 
-=over 8
+=over 4
+
+=item
 
 Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
 rights reserved.
@@ -251,13 +206,11 @@ This copyright does not prohibit distribution of any version of Perl
 containing this extension under the terms of the GNU or Artistic
 licences.
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 The MD5 interface was written by Neil Winton
 (C<N.Winton@axion.bt.co.uk>).
 
-=head1 SEE ALSO
-
-perl(1).
+This release was made by Gisle Aas <gisle@aas.no>
 
 =cut
