@@ -1,42 +1,37 @@
-MD5 Extension Version 1.7
+-----BEGIN PGP SIGNED MESSAGE-----
 
-This is a Perl5 extension interface to the RSA Data Security Inc. MD5
-Message Digest algorithm. Documentation is in MD5.pod.
+Friday, March 6, 1998
 
-To build the extension, unpack this distribution under the ext/
-directory of your Perl source distribution, create the Makefile using
-'perl Makefile.PL' and do a 'make'.
+This is the MD5 module with shared libraries compiled for 
+MacPerl.  Shared libraries run only on PPC and CFM68K versions, not 
+non-CFM 68K versions.
 
-Note that the MD5.xs file uses the "PROTOTYPES: DISABLE" facility
-which only became available in late betas pf perl 5.002. If you are
-using a version which does not support this then merely remove
-this line.
+This was compiled with MPW and Codewarrior.  Passed all tests.  
+I have no 68K machine so I can't test the CFM68K version.  Let me 
+know of any problems.
 
-The mddriver.pl script gives a simple example of how to use the
-routines. In particular 'perl mddriver.pl -x' will perform a quick
-test of the routines to see if they produce the expected output. The
-use of "make test" will perform a more comprehensive test. (WARNING:
-You should not run mddriver.pl directly in the MD5 directory when using
-dynamic linking as on some systems it will dynamically link to object
-files in the current directory which may not give the correct
-behaviour. This is believed to affect at least AIX and IRIX. A similar
-caveat applies to the direct use of the test.pl script).
+Decompress macblib.sit.hqx and install the three files in "macblib".
+Installing into your site_perl directory is best:
 
-The module is known to work (using static or dynamic linking) on at
-least AIX, Solaris, HP-UX and IRIX. It should work on other
-"reasonable" UNIX-like platforms (for an unspecified definition of the
-word "reasonable" :-)
+    {MACPERL}site_perl:MD5.pm
+    {MACPERL}site_perl:MacCFM68K:auto:MD5:MD5
+    {MACPERL}site_perl:MacPPC:auto:MD5:MD5
 
-Support is also provided for 64-bit platforms. This should be detected
-and handled automatically. See the entry for version 1.7 in the
-Changes file for further details.
+Also read README.orig, the original README file for this distribution.
 
-Bugs, queries, plaudits to
+-----BEGIN PGP SIGNATURE-----
+Version: PGPfreeware 5.0 for non-commercial use <http://www.pgp.com>
+Charset: noconv
 
-	Neil Winton
+iQCVAwUBNQBVfChcZja3bnKtAQGKkAP+PNAI1pk9I5g4cABt43ko8LMg88QvghW4
+1crgbAu3BxvG9aF7zoXsyBYcLM+mPAKjwTJT0sUVhAhjuNKkSYVgZNWFVW8RT6re
+8/DHJeBn9M9B/tKdZTPth6BnlNhwk8KvLFSHKF8AV5NPpMgfyt5xFNbTJCugCTXa
+iRkYI2YFzGY=
+=KYAN
+-----END PGP SIGNATURE-----
 
-*   Neil Winton			Post Point P5		*
-*   N.Winton@axion.bt.co.uk	BT Laboratories		*
-*   Tel +44 1473 646079		Martlesham Heath	*
-*   Fax +44 1473 643306		IPSWICH IP5 7RE, UK	*
-
+-- 
+Chris Nandor          mailto:pudge@pobox.com         http://pudge.net/
+%PGPKey=('B76E72AD',[1024,'0824 090B CE73 CA10  1FF7 7F13 8180 B6B6'])
+#==               New Book:  MacPerl: Power and Ease               ==#
+#==    Publishing Date: Early 1998. http://www.ptf.com/macperl/    ==#
