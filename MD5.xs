@@ -4,15 +4,18 @@
 **	RSA Data Security Inc. MD5 Message-Digest Algorithm
 **
 **	This module by Neil Winton (N.Winton@axion.bt.co.uk)
-**	SCCS ID @(#)MD5.xs	1.5 96/02/27
+**	SCCS ID @(#)MD5.xs	1.6 96/04/09
 **
 **	This extension may be distributed under the same terms
 **	as Perl. The MD5 code is covered by separate copyright and
 **	licence, but this does not prohibit distribution under the
-**	GNU or Artistic licences. See the file md5c.c or MD5.pod
+**	GNU or Artistic licences. See the file md5c.c or MD5.pm
 **	for more details.
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
@@ -33,7 +36,14 @@
 
 typedef MD5_CTX	*MD5;
 
+#ifdef __cplusplus
+}
+#endif
+
+
 MODULE = MD5		PACKAGE = MD5
+
+PROTOTYPES: DISABLE
 
 MD5
 new(packname = "MD5")

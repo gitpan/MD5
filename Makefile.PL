@@ -1,10 +1,12 @@
-# SCCS ID @(#)Makefile.PL	1.8 96/03/14
+# SCCS ID @(#)Makefile.PL	1.9 96/04/09
 use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile being created.
+# the contents of the Makefile that is written.
 WriteMakefile(
-	DISTNAME => 'MD5',
-	VERSION => '1.5.3',
-	OBJECT => q[MD5$(OBJ_EXT) md5c$(OBJ_EXT)],
-	XSPROTOARG => '-noprototypes',
+    'NAME'	=> 'MD5',
+    'VERSION_FROM' => 'MD5.pm', # finds $VERSION
+    'LIBS'	=> [''],   # e.g., '-lm' 
+    'DEFINE'	=> '',     # e.g., '-DHAVE_SOMETHING' 
+    'INC'	=> '',     # e.g., '-I/usr/include/other' 
+    'OBJECT'	=> q[MD5$(OBJ_EXT) md5c$(OBJ_EXT)],
 );

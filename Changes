@@ -1,3 +1,14 @@
+Revision history for Perl extension MD5.
+
+*** 96/04/09 Version 1.6
+
+Re-generated module framework using h2xs to pick up the latest module
+conventions for versions etc. You can now say "use MD5 1.6;" and things
+should work correctly. MD5.pod has been integrated into MD5.pm and
+CHANGES renamed to Changes. There is a fairly comprehensive test.pl
+which can be invoked via "make test". There are no functional changes
+to the MD5 routines themselves.
+
 *** 96/03/14 Version 1.5.3
 
 Fixed addfile method to accept type-glob references for the file-handle
@@ -44,4 +55,4 @@ always implicitly in package main while other filehandles aren't.
 
 [Changes pre 1.2.1 not recorded]
 
-SCCS ID @(#)CHANGES	1.3 96/03/14
+SCCS ID @(#)Changes	1.4 96/04/09

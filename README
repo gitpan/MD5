@@ -1,4 +1,4 @@
-MD5 Extension Version 1.5.3
+MD5 Extension Version 1.6
 
 This is a Perl5 extension interface to the RSA Data Security Inc. MD5
 Message Digest algorithm. Documentation is in MD5.pod.
@@ -7,17 +7,25 @@ To build the extension, unpack this distribution under the ext/
 directory of your Perl source distribution, create the Makefile using
 'perl Makefile.PL' and do a 'make'.
 
-The mddriver.pl script gives a simple example of how to use the
-routines. In particular 'perl mddriver.pl -x' will perform a test of
-the routines to see if they produce the expected output. (WARNING: You
-should not run this directly in the MD5 directory when using dynamic
-linking as on some systems it will dynamically link to object files in
-the current directory which may not give the correct behaviour. This is
-believed to affect at least AIX and IRIX).
+Note that the MD5.xs file uses the "PROTOTYPES: DISABLE" facility
+which only became available in late betas pf perl 5.002. If you are
+using a version which does not support this then merely remove
+this line.
 
-This version fixes the problem with dynamic linking of the module
-under Solaris 2.x which happend in releases prior to 1.4. Thanks to Ken
-Pizzini (ken@spry.com) for nailing this.
+The mddriver.pl script gives a simple example of how to use the
+routines. In particular 'perl mddriver.pl -x' will perform a quick
+test of the routines to see if they produce the expected output. The
+use of "make test" will perform a more comprehensive test. (WARNING:
+You should not run mddriver.pl directly in the MD5 directory when using
+dynamic linking as on some systems it will dynamically link to object
+files in the current directory which may not give the correct
+behaviour. This is believed to affect at least AIX and IRIX. A similar
+caveat applies to the direct use of the test.pl script).
+
+The module is known to work (using static or dynamic linking) on at
+least AIX, Solaris, HP-UX and IRIX. It should work on other
+"reasonable" UNIX-like platforms (for an unspecified definition of the
+word "reasonable" :-)
 
 Bugs, queries, plaudits to
 
