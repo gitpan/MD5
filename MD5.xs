@@ -4,10 +4,13 @@
 **	RSA Data Security Inc. MD5 Message-Digest Algorithm
 **
 **	This module by Neil Winton (N.Winton@axion.bt.co.uk)
-**	SCCS ID @(#)MD5.xs	1.2 94/11/07
+**	SCCS ID @(#)MD5.xs	1.4 95/05/23
 **
-**	The MD5 code is covered by separate copyright and licence.
-**	See the file md5c.c for more details.
+**	This extension may be distributed under the same terms
+**	as Perl. The MD5 code is covered by separate copyright and
+**	licence, but this does not prohibit distribution under the
+**	GNU or Artistic licences. See the file md5c.c or MD5.pod
+**	for more details.
 */
 
 #include "EXTERN.h"
@@ -65,7 +68,7 @@ add(context, ...)
 	    }
 	}
 
-char *
+SV *
 digest(context)
 	MD5	context
     CODE:

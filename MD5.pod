@@ -59,8 +59,10 @@ provided that the implementation is working correctly.
 
 =head1 NOTE
 
-The MD5 algorithm is defined in RFC1321. The basic C code is covered
-by the following copyright:
+The MD5 extension may be redistributed under the same terms as Perl.
+The MD5 algorithm is defined in RFC1321. The basic C code implementing
+the algorithm is derived from that in the RFC and is covered by the
+following copyright:
 
 =over 8
 
@@ -86,6 +88,10 @@ These notices must be retained in any copies of any part of this
 documentation and/or software.
 
 =back
+
+This copyright does not prohibit distribution of any version of Perl
+containing this extension under the terms of the GNU or Artistic
+licences.
 
 =head1 AUTHOR
 

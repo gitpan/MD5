@@ -1,5 +1,5 @@
 #!/usr/local/bin/perl
-# SCCS IDI @(#)mddriver.pl	1.2 94/11/07
+# SCCS ID @(#)mddriver.pl	1.3 95/05/01
 
 require 'getopts.pl';
 use MD5;
