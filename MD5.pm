@@ -3,7 +3,7 @@ package MD5;  # legacy stuff
 use strict;
 use vars qw($VERSION @ISA);
 
-$VERSION = '2.02';  # $Date: 2001/03/14 04:44:31 $
+$VERSION = '2.03';  # $Date: 2003/11/27 08:42:40 $
 
 require Digest::MD5;
 @ISA=qw(Digest::MD5);
@@ -44,7 +44,7 @@ interface still work and get the speed benefit of the new module.
 
 In addition to the methods provided for C<Digest::MD5> objects, this
 module provide the class methods MD5->hash() and MD5->hexhash() that
-basically do the same as the md5() and md5_hex() functions provided by
+do the same as the md5() and md5_hex() functions provided by
 C<Digest::MD5>.
 
 =head1 SEE ALSO
