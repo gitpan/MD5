@@ -3,7 +3,7 @@ package MD5;
 use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
-$VERSION = '1.9951';  # $Date: 1998/10/22 18:53:32 $
+$VERSION = '1.9952';  # $Date: 1998/10/23 08:50:08 $
 
 require Exporter;
 *import = \&Exporter::import;
